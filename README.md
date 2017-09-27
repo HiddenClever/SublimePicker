@@ -1,4 +1,4 @@
-https://travis-ci.org/hardekool/SublimePicker.svg?branch=master
+[![build](https://travis-ci.org/hardekool/SublimePicker.svg?branch=master)]
 # SublimePicker
 
 A customizable view that provisions picking of a date, time & recurrence option, all from a single user-interface. You can also view 'SublimePicker' as a collection of material-styled (API 23) DatePicker, TimePicker & RecurrencePicker, backported to API 14.
