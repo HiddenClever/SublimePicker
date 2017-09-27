@@ -1,12 +1,15 @@
 language: android
 jdk: oraclejdk8
 sudo: false
-
 android:
   components:
-    - platform-tools
-    - tools
-    - build-tools-25.0.3
-    - android-25
+  - platform-tools
+  - tools
+  - build-tools-25.0.3
+  - android-25
+env:
+  global:
+  - secure: uWVyl+l1cuEAqhnWHXUxdqfImvD5tWe/lF3PfOYYD9kJLtpRwRKPsRrkFCpngjzDQNf+eKg1ISXp4oPi1ll2AWWwHOvX2x8+AvOZCq88BddzC1a67TaiVLuvqz+RSTwQFqdmKhfS9Z8PA/amyHM1rriIg7UWfzTxGtNm+87r1vM/T93X5lYvTsAloGAGltWQ1tjVk9k6ia6SnbaQqyHKEmaCojuftJW0tdR3kZx+id7ji6Og3C4NbGIQjUbXfTuHcXw7cUpFfraTjhEFfXdmKauw7u9kbmSD3mW/WAn+jIoRBNOPMlMJQFfNd82u3WnLkSCUSUdE3URri9gQiKP8pEJQporTkzgy7LCG+O3Yimm/5r+9fGqfdFUWSjhys1tCChwY5HV7UYjy3lziwcCCszRDdpjMBOSmxg1iI7Y6rCzVkyQVZgVgihR31A3nfylCHLzxAWQCDRea5WBMDFe+ZLuYxEueDPDgXX1IbIt1RkdzOmkRV1moNjtShT+t3mzdSG4kjSnTYOverfpM4ETjovD++xQEUDUv8j5cpRVSPDR0E8p4IfBHKe10MEj3LK7piNglk7fUesimQgObLstFgyNh+dv3n2R5bYuJ4hovnMlZeTCMiX4NA3Xy15OVVR/k0l5gLD2Yd1lSbibvms+qagE6TKMb0UtOidi6fIBep9k=
+  - secure: Khm70vcXDtcdBqxatIE+Ugq6oA8Re4K9J3MmaqOAGq383+EVD+dyiCxM9AbEP5IDLQ9kPe1mQtI/G06MyL2F3URAQYElXPmC+6agnCN1NWYsMGMuaWu1blA4onHJyd3LS256d+Ruh782o9OWJFLcsH5TAdXfYJj9CYtJcj9xS5oxumTAqhr2Kh+X9Tjn4DzaeREsdD8prd10ULfL/mFwa0g+N1mPHInNoY86kej9aiG2BPqf0NOvoC6EohjV6otjvw85MgZNj8A2rd24dLQpy9cFQsuBGxZsP47UJBQX3opwl7Z2llqGn+d+Y0RykIok/KqUFuKeQd+fdP9b/WOhClMDkk0KX6VF2q6WdmMTnsbw4byv523GrYQZLKi/2Tq2WMFOlgf3YH0HEsEovKLCUbd5kIBwPfiQikkjhmyh8TGn+LiNV5M/Eax5W9GgD+/GXdWtumc0AbeVamO9d0M4M/TXS8RA+vv3Yk3QTHHIWZE4xrK7Zyc820f/CA2s9xmO7sFAyTuZI2FRY95tm8veJjdXLemiut4UIwBAIk1Kq7vy4y+8DZWQO5eSpaHiIMdsvpKsxEaxssXdMwsGD9zbrEtmL1PlhF2MfRKW/tRpW3o3v+9dP1ZM1U48/0XFOGqRlMd5vIeusdgOnuyKi2vTB+F8frSuGroCXVnc8M6P6gI=
 
-script: ./gradlew :sublimepickerlibrary:tDUT
+script: ./gradlew :sublimepickerlibrary:clean :sublimepickerlibrary:assemble :sublimepickerlibrary:bintrayUpload --stacktrace
