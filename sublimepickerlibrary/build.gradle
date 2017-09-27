@@ -22,20 +22,20 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'sublime-picker'
 
-    publishedGroupId = 'com.appeaser.sublimepickerlibrary'
+    publishedGroupId = 'com.sbg.sublimepickerlibrary'
     libraryName = 'SublimePicker'
     artifact = 'sublimepickerlibrary'
 
     libraryDescription = 'A material-styled android view that provisions picking of a date, time & recurrence option, all from a single user-interface.'
 
-    siteUrl = 'https://github.com/vikramkakkar/SublimePicker'
-    gitUrl = 'https://github.com/vikramkakkar/SublimePicker.git'
+    siteUrl = 'https://github.com/hardekool/SublimePicker'
+    gitUrl = 'https://github.com/hardekool/SublimePicker.git'
 
-    libraryVersion = '2.1.1'
+    libraryVersion = '2.1.2'
 
-    developerId = 'vikramkakkar'
-    developerName = 'Vikram Kakkar'
-    developerEmail = 'vikram.kakkar.85@gmail.com'
+    developerId = 'hardekool'
+    developerName = 'Nico Kiewiet (Fork from Vikram Kakkar)'
+    developerEmail = 'ngkiewiet@gmail.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
@@ -50,7 +50,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 4
-        versionName "2.1.1"
+        versionName "2.1.2"
     }
     buildTypes {
         release {
