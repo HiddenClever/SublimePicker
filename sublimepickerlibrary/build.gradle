@@ -14,7 +14,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
-def currentVersion = '2.1.2'
+
+def currentVersion = '2.1.3'
 
 android {
     compileSdkVersion 25
@@ -24,6 +25,7 @@ android {
         disable 'MissingTranslation'
         disable 'Instantiatable'
         disable 'ResourceType'
+        abortOnError false
     }
     defaultConfig {
         minSdkVersion 14
@@ -52,15 +54,49 @@ dependencies {
     compile 'com.android.support:support-annotations:25.3.1'
 }
 
+task sourcesJar(type: Jar) {
+    classifier 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task javadoc(type: Javadoc) {
+    failOnError  false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+def pomConfig = {
+    scm {
+        url 'https://github.com/SBGMobile/SublimePicker'
+    }
+}
+
 publishing{
     publications{
         mavenJava(MavenPublication){
             groupId 'com.github.sbgmobile'
             artifactId 'sublimepickerlibrary-sbgmobile'
             version currentVersion
+            artifact(sourcesJar)
+            artifact(javadocJar)
             artifact("$buildDir/outputs/aar/sublimepickerlibrary-release.aar")
             pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
+                def root = asNode()
+                root.appendNode('description', 'A customizable view that provisions picking of a date, time & recurrence option, all from a single user-interface. You can also view \'SublimePicker\' as a collection of material-styled (API 23) DatePicker, TimePicker & RecurrencePicker, backported to API 14')
+                root.appendNode('name', 'SublimePicker')
+                root.appendNode('url', 'https://github.com/SBGMobile/SublimePicker')
+                root.children().last() + pomConfig
+                def dependenciesNode = root.appendNode('dependencies')
                 //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
                 configurations.compile.allDependencies.each {
                     if(it.group != null && (it.name != null || "unspecified".equals(it.name)) && it.version != null)
@@ -80,13 +116,17 @@ bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
     publications = ['mavenJava']
+    dryRun = false
     publish = true
+    override = true
+    configurations = ['archives']
     pkg {
         repo = 'SBGMobile-SublimePicker'
         name = 'SublimePicker'
         userOrg = 'sbgmobile'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/SBGMobile/SublimePicker.git'
+        websiteUrl = 'https://github.com/SBGMobile/SublimePicker'
         version {
             name = currentVersion
             gpg{
