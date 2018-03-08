@@ -87,7 +87,9 @@ public class RadialTimePickerView extends View {
 
     private static final int[] HOURS_NUMBERS = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     private static final int[] HOURS_NUMBERS_24 = {0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
-    private static final int[] MINUTES_NUMBERS = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55};
+    //    private static final int[] MINUTES_NUMBERS = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55};
+    // TODO: setMinuteInterval: Make this array programmatic
+    private static final int[] MINUTES_NUMBERS = {0, 30};
 
     private static final int FADE_OUT_DURATION = 500;
     private static final int FADE_IN_DURATION = 500;
@@ -258,6 +260,15 @@ public class RadialTimePickerView extends View {
         return SNAP_PREFER_30S_MAP[degrees];
     }
 
+    // TODO: setMinuteInterval: Make this function programmatic like snapPrefer30s
+    private static int snapPrefer180s(int degrees) {
+        if (degrees < 90 || degrees > 270) {
+            return 0;
+        } else {
+            return 180;
+        }
+    }
+
     /**
      * Returns mapping of any input degrees (0 to 360) to one of 12 visible output degrees (all
      * multiples of 30), where the input will be "snapped" to the closest visible degrees.
@@ -415,10 +426,12 @@ public class RadialTimePickerView extends View {
         // Initial values
         final Calendar calendar = Calendar.getInstance(Locale.getDefault());
         final int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        final int currentMinute = calendar.get(Calendar.MINUTE);
+        final int unroundedCurrentMinute = calendar.get(Calendar.MINUTE);
+        // TODO: setMinuteInterval: Make this value programmatic
+        final int mod = unroundedCurrentMinute % 30;
 
         setCurrentHourInternal(currentHour, false, false);
-        setCurrentMinuteInternal(currentMinute, false);
+        setCurrentMinuteInternal(unroundedCurrentMinute + (mod < 15 ? -mod : (30 - mod)), false);
 
         setHapticFeedbackEnabled(true);
     }
@@ -617,7 +630,10 @@ public class RadialTimePickerView extends View {
             mHours12Texts[i] = String.format("%d", HOURS_NUMBERS[i]);
             mInnerHours24Texts[i] = String.format("%02d", HOURS_NUMBERS_24[i]);
             mOuterHours24Texts[i] = String.format("%d", HOURS_NUMBERS[i]);
-            mMinutesTexts[i] = String.format("%02d", MINUTES_NUMBERS[i]);
+        }
+
+        for (int i = 0; i < MINUTES_NUMBERS.length; i++) {
+            mMinutesTexts[i * (NUM_POSITIONS / MINUTES_NUMBERS.length)] = String.format("%02d", MINUTES_NUMBERS[i]);
         }
     }
 
@@ -837,19 +853,21 @@ public class RadialTimePickerView extends View {
         final int activatedFloor = (int) activatedIndex;
         final int activatedCeil = ((int) Math.ceil(activatedIndex)) % NUM_POSITIONS;
 
-        for (int i = 0; i < 12; i++) {
-            final boolean activated = (activatedFloor == i || activatedCeil == i);
-            if (activatedOnly && !activated) {
-                continue;
+        for (int i = 0; i < texts.length; i++) {
+            if (texts[i] != null) {
+                final boolean activated = (activatedFloor == i || activatedCeil == i);
+                if (activatedOnly && !activated) {
+                    continue;
+                }
+
+                final int stateMask = SUtils.STATE_ENABLED
+                        | (showActivated && activated ? SUtils.STATE_ACTIVATED : 0);
+                final int color = textColor.getColorForState(SUtils.resolveStateSet(stateMask), 0);
+                paint.setColor(color);
+                paint.setAlpha(getMultipliedAlpha(color, alpha));
+
+                canvas.drawText(texts[i], textX[i], textY[i], paint);
             }
-
-            final int stateMask = SUtils.STATE_ENABLED
-                    | (showActivated && activated ? SUtils.STATE_ACTIVATED : 0);
-            final int color = textColor.getColorForState(SUtils.resolveStateSet(stateMask), 0);
-            paint.setColor(color);
-            paint.setAlpha(getMultipliedAlpha(color, alpha));
-
-            canvas.drawText(texts[i], textX[i], textY[i], paint);
         }
     }
 
@@ -1016,7 +1034,7 @@ public class RadialTimePickerView extends View {
             type = HOURS;
             newValue = getCurrentHour();
         } else {
-            final int snapDegrees = snapPrefer30s(degrees) % 360;
+            final int snapDegrees = snapPrefer180s(degrees);
             valueChanged = mSelectionDegrees[MINUTES] != snapDegrees;
             mSelectionDegrees[MINUTES] = snapDegrees;
             type = MINUTES;

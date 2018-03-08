@@ -2,6 +2,7 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/sublimepickerlibrary/sublimepickerlibrary.iml
 .DS_Store
 /build
 /captures

@@ -248,8 +248,10 @@ public class SublimeTimePicker extends FrameLayout
         // Initialize with current time
         final Calendar calendar = Calendar.getInstance(mCurrentLocale);
         final int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        final int currentMinute = calendar.get(Calendar.MINUTE);
-        initialize(currentHour, currentMinute, false /* 12h */, HOUR_INDEX);
+        final int unroundedCurrentMinute = calendar.get(Calendar.MINUTE);
+        // TODO: setMinuteInterval: Make this value programmatic
+        final int mod = unroundedCurrentMinute % 30;
+        initialize(currentHour, unroundedCurrentMinute + (mod < 15 ? -mod : (30 - mod)), false /* 12h */, HOUR_INDEX);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

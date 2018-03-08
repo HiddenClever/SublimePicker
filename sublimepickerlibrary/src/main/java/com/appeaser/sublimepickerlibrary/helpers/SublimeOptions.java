@@ -48,8 +48,8 @@ public class SublimeOptions implements Parcelable {
 
     // Date & Time params
     private int mStartYear = -1, mStartMonth = -1, mStartDayOfMonth = -1,
-                mEndYear = -1, mEndMonth = -1, mEndDayOfMonth = -1,
-                mHourOfDay = -1, mMinute = -1;
+            mEndYear = -1, mEndMonth = -1, mEndDayOfMonth = -1,
+            mHourOfDay = -1, mMinute = -1;
     //private int mYear = -1, mMonthOfYear = -1, mDayOfMonth = -1, mHourOfDay = -1, mMinute = -1;
     private long mMinDate = Long.MIN_VALUE, mMaxDate = Long.MIN_VALUE;
     private boolean mAnimateLayoutChanges, mIs24HourView;
@@ -279,7 +279,10 @@ public class SublimeOptions implements Parcelable {
         if (mHourOfDay == -1 || mMinute == -1) {
             Calendar cal = SUtils.getCalendarForLocale(null, Locale.getDefault());
             mHourOfDay = cal.get(Calendar.HOUR_OF_DAY);
-            mMinute = cal.get(Calendar.MINUTE);
+            int unroundedCurrentMinute = cal.get(Calendar.MINUTE);
+//            // TODO: setMinuteInterval: Make these value programmatic
+            int mod = unroundedCurrentMinute % 30;
+            mMinute = unroundedCurrentMinute + (mod < 15 ? -mod : (30 - mod));
         }
 
         return new int[]{mHourOfDay, mMinute};
