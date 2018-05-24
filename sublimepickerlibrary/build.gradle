@@ -17,7 +17,7 @@ apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-def currentVersion = '2.1.4'
+def currentVersion = '2.1.5'
 
 android {
     compileSdkVersion 27
@@ -123,7 +123,7 @@ bintray {
         version {
             name = currentVersion
             released = new Date()
-            vcsTag = 'v2.1.2'
+            vcsTag = 'v2.1.5'
             gpg{
                 sign = true
             }
