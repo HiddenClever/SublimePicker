@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':sublimepickerlibrary')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':sublimepickerlibrary')
 }
