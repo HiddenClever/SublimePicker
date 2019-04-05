@@ -22,11 +22,12 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.appeaser.sublimepickerlibrary.R;
+
+import androidx.annotation.NonNull;
 
 /**
  * Indicator used for selected year in YearPickerView
