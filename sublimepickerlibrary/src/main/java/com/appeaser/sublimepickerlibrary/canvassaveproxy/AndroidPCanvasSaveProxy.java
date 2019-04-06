@@ -3,8 +3,9 @@ package com.appeaser.sublimepickerlibrary.canvassaveproxy;
 
 import android.graphics.Canvas;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by Christian Grasser on 14.10.2018.
